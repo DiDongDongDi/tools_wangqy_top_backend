@@ -5,11 +5,20 @@ tools.wangqy.top后端
 # 版本要求
 
 1. python版本：`3.9.6`
-2. 使`django-admin`命令生效：
+2. django版本：`4.2.23`
+3. 使`django-admin`命令生效：
 
 ```shell
 echo 'export PATH="$PATH:/Users/kodyqywang/Library/Python/3.9/bin"' >> ~/.zshrc
 source ~/.zshrc  # 重新加载配置
 ```
 
-3. django版本：`4.2.23`
+4. 启动项目：
+
+```shell
+python -m venv .venv
+source .venv/bin/activate
+django-admin startproject src
+cd src
+python manage.py runserver
+```
