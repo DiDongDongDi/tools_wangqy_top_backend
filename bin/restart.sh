@@ -30,35 +30,38 @@ echo "检查日志轮转..."
 # 启动新的Django服务
 echo "启动新服务..."
 # 启动Django服务并将日志输出到文件
-python manage.py runserver >> "$LOG_FILE" 2>&1 &
+python manage.py runserver >>"$LOG_FILE" 2>&1 &
 
 # 等待服务启动
 sleep 3
 
 # 检查服务是否成功启动
-if pgrep -f "manage.py runserver" > /dev/null; then
+if pgrep -f "manage.py runserver" >/dev/null; then
     echo "✅ Django服务已成功重启"
     echo "服务运行在: http://127.0.0.1:8000/"
-    
+
     # 设置定时日志轮转任务（每小时检查一次）
     echo "设置定时日志轮转任务..."
     setup_log_rotation() {
         # 创建crontab条目
         CRON_JOB="0 * * * * $SCRIPT_DIR/log_rotate.sh >> $PROJECT_DIR/logs/log_rotate.log 2>&1"
-        
+
         # 检查是否已经存在相同的crontab条目
         if ! crontab -l 2>/dev/null | grep -q "$SCRIPT_DIR/log_rotate.sh"; then
             # 添加新的crontab条目
-            (crontab -l 2>/dev/null; echo "$CRON_JOB") | crontab -
+            (
+                crontab -l 2>/dev/null
+                echo "$CRON_JOB"
+            ) | crontab -
             echo "✅ 定时日志轮转任务已设置（每小时执行一次）"
         else
             echo "ℹ️  定时日志轮转任务已存在"
         fi
     }
-    
+
     # 尝试设置定时任务
     setup_log_rotation
-    
+
     echo ""
     echo "📋 日志管理信息:"
     echo "   - 当前日志文件: $LOG_FILE"
