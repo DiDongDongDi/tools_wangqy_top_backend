@@ -153,3 +153,87 @@ chmod +x bin/*.sh
 MAX_SIZE_MB=100  # 最大文件大小（MB）
 MAX_FILES=5      # 保留的日志文件数量
 ```
+
+# 脚本使用说明
+
+## restart.sh - Django服务重启脚本
+
+### 功能特性
+
+- 支持开发环境和生产环境的区分
+- 自动日志轮转管理
+- 定时任务设置
+- 进程管理
+
+### 使用方法
+
+#### 基本用法
+
+```bash
+# 生产环境启动（默认）
+./bin/restart.sh
+
+# 或者明确指定生产环境
+./bin/restart.sh prd
+
+# 开发环境启动
+./bin/restart.sh dev
+```
+
+#### 参数说明
+
+- `dev` - 开发环境
+  - 使用 `python3` 命令
+  - 适用于开发调试
+  
+- `prd` - 生产环境（默认）
+  - 使用 `python` 命令
+  - 适用于生产部署
+
+### 环境配置
+
+环境配置在 `bin/config.sh` 文件中管理：
+
+```bash
+# 开发环境配置
+DEV_PYTHON_CMD="python3"
+DEV_SETTINGS_MODULE="src.settings"
+
+# 生产环境配置
+PRD_PYTHON_CMD="python"
+PRD_SETTINGS_MODULE="src.settings"
+```
+
+### 功能说明
+
+1. **进程管理**
+   - 自动停止现有的Django服务
+   - 启动新的Django服务
+
+2. **日志管理**
+   - 自动创建日志目录
+   - 日志文件：`logs/django.log`
+   - 自动日志轮转（最大100MB，保留5个文件）
+
+3. **定时任务**
+   - 自动设置每小时检查日志轮转的crontab任务
+   - 避免重复设置
+
+4. **环境变量**
+   - 自动设置 `DJANGO_SETTINGS_MODULE` 环境变量
+   - 根据环境使用不同的Python可执行命令
+
+### 输出信息
+
+脚本运行时会显示：
+- 当前使用的环境配置
+- 服务启动状态
+- 日志管理信息
+- Python命令和Django设置模块
+
+### 注意事项
+
+1. 确保脚本有执行权限
+2. 确保配置文件 `config.sh` 存在且可读
+3. 生产环境建议使用虚拟环境
+4. 日志文件会保存在项目根目录的 `logs` 文件夹中

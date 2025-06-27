@@ -5,7 +5,40 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # 获取项目根目录（脚本目录的上级目录）
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 
-echo "正在重启Django服务..."
+# 导入配置文件
+source "$SCRIPT_DIR/config.sh"
+
+# 默认环境为生产环境
+ENVIRONMENT="prd"
+
+# 解析命令行参数
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        dev)
+            ENVIRONMENT="dev"
+            shift
+            ;;
+        prd)
+            ENVIRONMENT="prd"
+            shift
+            ;;
+        *)
+            echo "未知参数: $1"
+            echo "用法: $0 [dev|prd]"
+            echo "  dev - 开发环境"
+            echo "  prd - 生产环境 (默认)"
+            exit 1
+            ;;
+    esac
+done
+
+# 根据环境设置Python可执行命令路径和Django设置
+PYTHON_CMD=$(get_python_cmd "$ENVIRONMENT")
+SETTINGS_MODULE=$(get_settings_module "$ENVIRONMENT")
+ENV_DESCRIPTION=$(get_env_description "$ENVIRONMENT")
+
+echo "🔧 使用${ENV_DESCRIPTION}配置"
+echo "正在重启Django服务 (环境: $ENVIRONMENT)..."
 
 # 切换到项目目录
 cd "$PROJECT_DIR/src"
@@ -29,8 +62,9 @@ echo "检查日志轮转..."
 
 # 启动新的Django服务
 echo "启动新服务..."
-# 启动Django服务并将日志输出到文件
-python manage.py runserver >>"$LOG_FILE" 2>&1 &
+# 设置Django环境变量并启动服务
+export DJANGO_SETTINGS_MODULE="$SETTINGS_MODULE"
+$PYTHON_CMD manage.py runserver 2>&1 | tee "$LOG_FILE" &
 
 # 等待服务启动
 sleep 3
@@ -64,6 +98,9 @@ if pgrep -f "manage.py runserver" >/dev/null; then
 
     echo ""
     echo "📋 日志管理信息:"
+    echo "   - 当前环境: $ENVIRONMENT ($ENV_DESCRIPTION)"
+    echo "   - Python命令: $PYTHON_CMD"
+    echo "   - Django设置模块: $SETTINGS_MODULE"
     echo "   - 当前日志文件: $LOG_FILE"
     echo "   - 日志轮转脚本: $SCRIPT_DIR/log_rotate.sh"
     echo "   - 轮转配置: 最大100MB，保留5个文件"
