@@ -6,7 +6,8 @@ tools.wangqy.top 后端
 
 1. python 版本：`3.9.6`
 2. django 版本：`4.2.23`
-3. 使`django-admin`命令生效：
+3. sqlite 版本：`3.8.3`及以上
+4. 使`django-admin`命令生效：
 
 ```shell
 echo 'export PATH="$PATH:/Users/kodyqywang/Library/Python/3.9/bin"' >> ~/.zshrc
