@@ -34,3 +34,9 @@ pyenv virtualenv 3.9.6 tools_wangqy_top_backend
 pyenv activate tools_wangqy_top_backend
 /root/.pyenv/versions/3.9.6/envs/tools_wangqy_top_backend/bin/python --version
 ```
+
+# 4. 新建 app
+
+```shell
+python manage.py startapp <app name>
+```
