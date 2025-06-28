@@ -64,7 +64,7 @@ echo "检查日志轮转..."
 echo "启动新服务..."
 # 设置Django环境变量并启动服务
 export DJANGO_SETTINGS_MODULE="$SETTINGS_MODULE"
-$PYTHON_CMD manage.py runserver 2>&1 | tee "$LOG_FILE" &
+$PYTHON_CMD manage.py runserver > "$LOG_FILE" 2>&1 &
 
 # 等待服务启动
 sleep 3
