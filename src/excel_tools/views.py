@@ -1,15 +1,13 @@
-from django.shortcuts import render
+import logging
+import os
 
-# Create your views here.
-
+import pandas as pd
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
-import os
-from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
-import pandas as pd
-import logging
+
+# Create your views here.
+
 
 # 获取excel_tools应用的logger
 logger = logging.getLogger("excel_tools")
@@ -30,14 +28,10 @@ def upload_file(request):
         # 检查是否有文件在请求中
         if "file" not in request.FILES:
             logger.warning("请求中没有找到文件")
-            return JsonResponse(
-                {"success": False, "message": "没有找到上传的文件"}, status=400
-            )
+            return JsonResponse({"success": False, "message": "没有找到上传的文件"}, status=400)
 
         uploaded_file = request.FILES["file"]
-        logger.info(
-            "接收到文件: %s, 大小: %s bytes", uploaded_file.name, uploaded_file.size
-        )
+        logger.info("接收到文件: %s, 大小: %s bytes", uploaded_file.name, uploaded_file.size)
 
         # 检查文件大小（限制为10MB）
         if uploaded_file.size > 10 * 1024 * 1024:
@@ -73,8 +67,12 @@ def upload_file(request):
         # 从17F单元格以下读取Product Description数据
         try:
             # 读取F列从第17行开始的所有数据（排除17F）
-            product_descriptions = excel_data.iloc[16:, 5].dropna().tolist()  # 17行开始F列，去除空值
-            logger.info("从17F单元格以下读取到Product Description数据，共%d条记录", len(product_descriptions))
+            product_descriptions = (
+                excel_data.iloc[16:, 5].dropna().tolist()
+            )  # 17行开始F列，去除空值
+            logger.info(
+                "从17F单元格以下读取到Product Description数据，共%d条记录", len(product_descriptions)
+            )
             logger.info("Product Description数据: %s", product_descriptions)
 
         except IndexError:
@@ -92,9 +90,7 @@ def upload_file(request):
         for description in product_descriptions:
             description_str = str(description)
             split_items = [
-                item.strip()
-                for item in description_str.split("|")
-                if item.strip()
+                item.strip() for item in description_str.split("|") if item.strip()
             ]
             product_descriptions_split.append(split_items)
 
