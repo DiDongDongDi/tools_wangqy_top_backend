@@ -1,8 +1,8 @@
-# tools_wangqy_top_backend
+# 1. tools_wangqy_top_backend
 
 tools.wangqy.top 后端
 
-# 版本要求
+# 2. 版本要求
 
 1. python 版本：`3.9.6`
 2. django 版本：`4.2.23`
@@ -24,7 +24,7 @@ cd django_base
 python manage.py runserver
 ```
 
-# 生产环境
+# 3. 生产环境
 
 使用 pyenv
 
