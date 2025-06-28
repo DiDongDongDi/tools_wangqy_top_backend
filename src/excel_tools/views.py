@@ -57,11 +57,11 @@ def upload_file(request):
                 status=400,
             )
 
-        # 保存文件到媒体目录
-        file_path = default_storage.save(
-            f"uploads/{uploaded_file.name}", ContentFile(uploaded_file.read())
-        )
-        logger.info("文件已保存到: %s", file_path)
+        # # 保存文件到媒体目录
+        # file_path = default_storage.save(
+        #     f"uploads/{uploaded_file.name}", ContentFile(uploaded_file.read())
+        # )
+        # logger.info("文件已保存到: %s", file_path)
 
         # 读取Excel文件内容
         # 重新读取文件内容用于解析
@@ -70,37 +70,51 @@ def upload_file(request):
         logger.info("Excel文件读取成功，数据形状: %s", excel_data.shape)
 
         # 获取基本信息
-        sheet_names = pd.ExcelFile(uploaded_file).sheet_names
-        total_rows = len(excel_data)
-        total_columns = len(excel_data.columns)
+        # 从17F单元格以下读取Product Description数据
+        try:
+            # 读取F列从第17行开始的所有数据（排除17F）
+            product_descriptions = excel_data.iloc[16:, 5].dropna().tolist()  # 17行开始F列，去除空值
+            logger.info("从17F单元格以下读取到Product Description数据，共%d条记录", len(product_descriptions))
+            logger.info("Product Description数据: %s", product_descriptions)
 
-        # 获取前5行数据作为预览
-        preview_data = excel_data.head().to_dict("records")
+        except IndexError:
+            logger.error("无法读取17F单元格以下的数据")
+            return JsonResponse(
+                {
+                    "success": False,
+                    "message": "无法读取17F单元格以下的Product Description数据",
+                },
+                status=400,
+            )
 
-        # 获取列名
-        column_names = excel_data.columns.tolist()
+        # 将每个Product Description按|分割成列表
+        product_descriptions_split = []
+        for description in product_descriptions:
+            description_str = str(description)
+            split_items = [
+                item.strip()
+                for item in description_str.split("|")
+                if item.strip()
+            ]
+            product_descriptions_split.append(split_items)
 
-        logger.info(
-            "文件处理完成，工作表数量: %s, 行数: %s, 列数: %s",
-            len(sheet_names),
-            total_rows,
-            total_columns,
-        )
+        logger.info("Product Description分割后的数据: %s", product_descriptions_split)
+
+        # 将数据添加到返回的excel_info中
+        excel_info = {
+            "total_rows": len(excel_data),
+            "total_columns": len(excel_data.columns),
+            "product_descriptions": product_descriptions_split,
+            "product_descriptions_count": len(product_descriptions_split),
+        }
 
         return JsonResponse(
             {
                 "success": True,
                 "message": "文件上传成功",
-                "file_path": file_path,
                 "file_name": uploaded_file.name,
                 "file_size": uploaded_file.size,
-                "excel_info": {
-                    "sheet_names": sheet_names,
-                    "total_rows": total_rows,
-                    "total_columns": total_columns,
-                    "column_names": column_names,
-                    "preview_data": preview_data,
-                },
+                "excel_info": excel_info,
             }
         )
 
