@@ -194,3 +194,5 @@ cython_debug/
 .cursorindexingignore
 
 tools_wangqy_top_backend/*
+*.xls
+*.xlsx
