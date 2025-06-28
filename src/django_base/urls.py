@@ -15,8 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.urls import path, include
+from django.urls import path
+from django_base.views import get_menu_list_i18n
 
 urlpatterns = [
-    path("api/", include("api.urls")),
+    path("api/get-menu-list-i18n", get_menu_list_i18n),
 ]
