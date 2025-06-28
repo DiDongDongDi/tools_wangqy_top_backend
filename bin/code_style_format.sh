@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-dev_proj_abs_path=$(cd "$(dirname "${BASH_SOURCE[0]/..}")" && pwd)
+dev_proj_abs_path=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 
 autoflake_cmd="autoflake --remove-all-unused-imports --ignore-init-module-imports -r -i"
 
