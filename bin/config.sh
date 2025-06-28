@@ -5,11 +5,11 @@
 
 # 开发环境配置
 DEV_PYTHON_CMD="python"
-DEV_SETTINGS_MODULE="src.settings"
+DEV_SETTINGS_MODULE="django_base.settings"
 
 # 生产环境配置
 PRD_PYTHON_CMD="/root/.pyenv/versions/3.9.6/envs/tools_wangqy_top_backend/bin/python"
-PRD_SETTINGS_MODULE="src.settings"
+PRD_SETTINGS_MODULE="django_base.settings"
 
 # 根据环境获取Python命令
 get_python_cmd() {

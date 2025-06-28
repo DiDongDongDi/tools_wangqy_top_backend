@@ -41,7 +41,7 @@ echo "🔧 使用${ENV_DESCRIPTION}配置"
 echo "正在重启Django服务 (环境: $ENVIRONMENT)..."
 
 # 切换到项目目录
-cd "$PROJECT_DIR/src"
+cd "$PROJECT_DIR/django_base"
 
 # 查找并杀死现有的Django进程
 echo "停止现有服务..."

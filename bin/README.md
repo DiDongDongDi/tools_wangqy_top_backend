@@ -123,11 +123,11 @@ logs/
 ```bash
 # 开发环境
 DEV_PYTHON_CMD="python3"
-DEV_SETTINGS_MODULE="src.settings"
+DEV_SETTINGS_MODULE="django_base.settings"
 
 # 生产环境
 PRD_PYTHON_CMD="python"
-PRD_SETTINGS_MODULE="src.settings"
+PRD_SETTINGS_MODULE="django_base.settings"
 ```
 
 ## 定时任务

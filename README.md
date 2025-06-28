@@ -19,8 +19,8 @@ source ~/.zshrc  # 重新加载配置
 ```shell
 python -m venv .venv
 source .venv/bin/activate
-django-admin startproject src
-cd src
+django-admin startproject django_base
+cd django_base
 python manage.py runserver
 ```
 
