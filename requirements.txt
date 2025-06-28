@@ -1,1 +1,4 @@
 Django==4.2.23
+isort==5.13.2
+autoflake==2.2.1
+black==23.12.1

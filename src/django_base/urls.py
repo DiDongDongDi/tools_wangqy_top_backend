@@ -16,6 +16,7 @@ Including another URLconf
 """
 
 from django.urls import path
+
 from django_base.views import get_menu_list_i18n
 
 urlpatterns = [
