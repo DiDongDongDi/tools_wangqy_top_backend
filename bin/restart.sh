@@ -8,8 +8,8 @@ PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 # 导入配置文件
 source "$SCRIPT_DIR/config.sh"
 
-# 默认环境为生产环境
-ENVIRONMENT="prd"
+# 从环境变量获取默认环境，如果没有设置则默认为生产环境
+ENVIRONMENT="${TOOLS_WANGQY_TOP_BACKEND_ENV:-prd}"
 
 # 解析命令行参数
 while [[ $# -gt 0 ]]; do
@@ -27,6 +27,7 @@ while [[ $# -gt 0 ]]; do
             echo "用法: $0 [dev|prd]"
             echo "  dev - 开发环境"
             echo "  prd - 生产环境 (默认)"
+            echo "  也可以通过设置环境变量 TOOLS_WANGQY_TOP_BACKEND_ENV 来指定默认环境"
             exit 1
             ;;
     esac
