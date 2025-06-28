@@ -15,15 +15,15 @@ PRD_SETTINGS_MODULE="django_base.settings"
 get_python_cmd() {
     local env="$1"
     case "$env" in
-        dev)
-            echo "$DEV_PYTHON_CMD"
-            ;;
-        prd)
-            echo "$PRD_PYTHON_CMD"
-            ;;
-        *)
-            echo "$PRD_PYTHON_CMD"  # 默认使用生产环境配置
-            ;;
+    dev)
+        echo "$DEV_PYTHON_CMD"
+        ;;
+    prd)
+        echo "$PRD_PYTHON_CMD"
+        ;;
+    *)
+        echo "$PRD_PYTHON_CMD" # 默认使用生产环境配置
+        ;;
     esac
 }
 
@@ -31,15 +31,15 @@ get_python_cmd() {
 get_settings_module() {
     local env="$1"
     case "$env" in
-        dev)
-            echo "$DEV_SETTINGS_MODULE"
-            ;;
-        prd)
-            echo "$PRD_SETTINGS_MODULE"
-            ;;
-        *)
-            echo "$PRD_SETTINGS_MODULE"  # 默认使用生产环境配置
-            ;;
+    dev)
+        echo "$DEV_SETTINGS_MODULE"
+        ;;
+    prd)
+        echo "$PRD_SETTINGS_MODULE"
+        ;;
+    *)
+        echo "$PRD_SETTINGS_MODULE" # 默认使用生产环境配置
+        ;;
     esac
 }
 
@@ -47,14 +47,14 @@ get_settings_module() {
 get_env_description() {
     local env="$1"
     case "$env" in
-        dev)
-            echo "开发环境"
-            ;;
-        prd)
-            echo "生产环境"
-            ;;
-        *)
-            echo "生产环境"
-            ;;
+    dev)
+        echo "开发环境"
+        ;;
+    prd)
+        echo "生产环境"
+        ;;
+    *)
+        echo "生产环境"
+        ;;
     esac
-} 
+}
