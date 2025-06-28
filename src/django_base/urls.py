@@ -15,10 +15,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.urls import path
+from django.urls import path, include
 
 from django_base.views import get_menu_list_i18n
 
 urlpatterns = [
     path("api/get-menu-list-i18n", get_menu_list_i18n),
+    path("api/excel-tools/", include("excel_tools.urls")),
 ]
