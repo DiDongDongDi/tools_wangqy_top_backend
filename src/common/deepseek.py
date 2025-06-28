@@ -243,3 +243,7 @@ def batch_generate_text(
         max_tokens=max_tokens,
         system_prompt=system_prompt,
     )
+
+
+if __name__ == "__main__":
+    print(generate_text("你是谁？"))
