@@ -4,7 +4,7 @@
 # 用于管理不同环境的Python可执行命令路径
 
 # 开发环境配置
-DEV_PYTHON_CMD="python"
+DEV_PYTHON_CMD="${TOOLS_WANGQY_TOP_BACKEND_DEV_PYTHON_CMD:-python}"
 DEV_SETTINGS_MODULE="django_base.settings"
 
 # 生产环境配置
